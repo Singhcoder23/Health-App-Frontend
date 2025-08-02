@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wellness Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+  <header>
+    <h1>🌱 Wellness Dashboard</h1>
+    <button id="logoutBtn">Logout</button>
+  </header>
+
+  <main>
+    <section class="section published-sessions">
+      <h2>Published Wellness Sessions</h2>
+      <div id="publishedSessionsList" class="session-list"></div>
+    </section>
+
+    <section class="section my-sessions">
+      <h2>My Sessions</h2>
+      <button id="newSessionBtn">+ New Session</button>
+      <div id="mySessionList" class="session-list"></div>
+    </section>
+
+    <section class="section session-editor" id="sessionEditorSection" style="display:none;">
+      <h2 id="editorHeader">Create / Edit Session</h2>
+      <form id="sessionForm" autocomplete="off">
+        <input type="hidden" id="_id" />
+
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required placeholder="Enter session title" />
+
+        <label for="tags">Tags (comma-separated)</label>
+        <input type="text" id="tags" name="tags" placeholder="e.g. yoga, meditation" />
+
+        <label for="json_file_url">JSON File URL</label>
+        <input type="text" id="json_file_url" name="json_file_url" placeholder="Session JSON file URL" />
+
+        <label for="content">Description / Content (optional)</label>
+        <textarea id="content" name="content" rows="5" placeholder="Describe your session..."></textarea>
+
+        <div class="editor-buttons">
+          <button type="button" id="saveDraftBtn">Save as Draft</button>
+          <button type="button" id="publishBtn">Publish</button>
+          <button type="button" id="cancelBtn">Cancel</button>
+        </div>
+      </form>
+      <div id="editorStatus" class="editor-status"></div>
+    </section>
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

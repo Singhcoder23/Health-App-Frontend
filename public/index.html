@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login | Wellness Portal</title>
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-illustration">
+      <img src="https://img.icons8.com/color/160/000000/yoga.png" alt="Yoga Illustration" />
+      <img src="https://img.icons8.com/color/96/000000/meditation-guru.png" alt="Meditation Icon" class="meditate-img"/>
+      <h1>Welcome back to <span class="brand">Peaceful Roots</span></h1>
+      <p>Find balance and calm. Start your wellness journey.</p>
+    </div>
+    <form id="loginForm" class="login-form">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required placeholder="your@email.com" />
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required placeholder="••••••••" />
+      <button type="submit">Login</button>
+      <div class="login-message" id="message"></div>
+      <p class="register-link">Don't have an account? <a href="register.html">Register here</a></p>
+    </form>
+  </div>
+  <footer>
+    <img src="https://img.icons8.com/color/48/000000/wind.png" alt="Breathing" />
+    <p>Wellness &middot; Mindfulness &middot; You</p>
+  </footer>
+  <script src="login.js"></script>
+</body>
+</html>
