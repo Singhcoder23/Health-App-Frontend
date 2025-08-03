@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Auth check
+  // --- Auth check & Logout ---
   const token = localStorage.getItem('token');
   if (!token) {
     window.location.href = 'index.html';
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = 'index.html';
   };
 
-  // Cached elements
+  // Elements
   const publishedSessionsList = document.getElementById('publishedSessionsList');
   const mySessionList = document.getElementById('mySessionList');
   const sessionEditorSection = document.getElementById('sessionEditorSection');
@@ -27,44 +27,76 @@ document.addEventListener('DOMContentLoaded', () => {
   const publishBtn = document.getElementById('publishBtn');
   const cancelBtn = document.getElementById('cancelBtn');
 
-  // Escape HTML
+  // Demo published sessions data with local JSON URLs
+  const DEMO_SESSIONS = [
+    {
+      title: "Morning Flow Yoga 🌅",
+      tags: ["yoga", "flow", "stretch"],
+      json_file_url: "morning-flow.json",
+      content: "Start your day with energy and balance with this guided yoga flow."
+    },
+    {
+      title: "Mindful Meditation Pause",
+      tags: ["meditation", "mindfulness", "breathe"],
+      json_file_url: "mindful-pause.json",
+      content: "Recharge your focus and mental calm with a 10-minute meditation."
+    },
+    {
+      title: "Lunch Break Breathing Reset",
+      tags: ["breathing", "stress relief", "afternoon"],
+      json_file_url: "lunch-break-reset.json",
+      content: "Feel renewed mid-day with a short breathing technique session."
+    }
+  ];
+
+  // Escape HTML for injection safety
   function escapeHtml(txt) {
     if (!txt) return '';
     const d = document.createElement('div');
     d.textContent = txt; return d.innerHTML;
   }
 
-  // List published sessions
+  // --- Load Published Sessions ---
   async function loadPublishedSessions() {
     try {
       const res = await fetch('http://localhost:5000/api/sessions');
       if (!res.ok) throw new Error();
       const sessions = await res.json();
-      publishedSessionsList.innerHTML = (sessions.length === 0)
-        ? '<p>No published sessions found.</p>'
-        : sessions.map(s => `
-            <div class="session-item published">
-              <div class="session-info">
-                <h3>${escapeHtml(s.title || 'Untitled')}</h3>
-                <p class="tags">Tags: ${(s.tags || []).map(escapeHtml).join(', ') || '<em>None</em>'}</p>
-                ${s.json_file_url ? `<p><a href="${escapeHtml(s.json_file_url)}" target="_blank" rel="noopener">Session JSON</a></p>` : ''}
-                ${s.content ? `<p>${escapeHtml(s.content)}</p>` : ''}
-              </div>
-            </div>
-          `).join('');
+
+      if (!Array.isArray(sessions) || sessions.length === 0) {
+        populatePublished(DEMO_SESSIONS, '(Demo)');
+        return;
+      }
+      populatePublished(sessions, '');
     } catch {
-      publishedSessionsList.innerHTML = `<p class="error">Error loading published sessions.</p>`;
+      populatePublished(DEMO_SESSIONS, '(Demo)');
     }
   }
 
-  // List user's sessions
+  function populatePublished(sessions, mark = '') {
+    publishedSessionsList.innerHTML = sessions.map(s => `
+      <div class="session-item published">
+        <div class="session-info">
+          <h3>${escapeHtml(s.title || 'Untitled')} <span style="font-size:0.7em;color:#aaa;">${mark}</span></h3>
+          <p class="tags">Tags: ${(s.tags || []).map(escapeHtml).join(', ') || '<em>None</em>'}</p>
+          ${s.json_file_url 
+            ? `<p><a href="workout.html?session=${encodeURIComponent(s.json_file_url)}" class="workout-link" target="_blank" rel="noopener">Do Workout</a></p>` 
+            : ''}
+          ${s.content ? `<p>${escapeHtml(s.content)}</p>` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // --- Load User's Sessions ---
   async function loadMySessions() {
     try {
       const res = await fetch('http://localhost:5000/api/my-sessions', {
         headers: { Authorization: 'Bearer ' + token }
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) throw new Error('Failed to load your sessions');
       const sessions = await res.json();
+
       mySessionList.innerHTML = (sessions.length === 0)
         ? '<p>You have no sessions.</p>'
         : sessions.map(s => `
@@ -77,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="session-actions">
               <button onclick="editSession('${s._id}')">Edit</button>
               ${s.status === 'draft' ? `<button class="publish" onclick="publishSession('${s._id}')">Publish</button>` : ''}
+              ${s.json_file_url ? `<a href="workout.html?session=${encodeURIComponent(s.json_file_url)}" target="_blank" rel="noopener" class="workout-link">Do Workout</a>` : ''}
             </div>
           </div>
         `).join('');
@@ -85,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Editor logic
+  // --- Session Editor Logic ---
   window.editSession = id => openEditor(id);
   window.publishSession = id => { inputId.value = id; saveOrPublish('publish'); };
   newSessionBtn.onclick = () => openEditor();
@@ -164,11 +197,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Auto-save after 5s of inactivity in any field
+  // Auto-save draft after 5 seconds of inactivity
   let autoSaveTimer = null;
-  [
-    inputTitle, inputTags, inputJsonUrl, inputContent
-  ].forEach(input =>
+  [ inputTitle, inputTags, inputJsonUrl, inputContent ].forEach(input =>
     input.addEventListener('input', () => {
       editorStatus.textContent = 'Editing...';
       if (autoSaveTimer) clearTimeout(autoSaveTimer);

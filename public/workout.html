@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Workout Session</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 700px;
+      margin: 2em auto;
+      padding: 1em;
+      background-color: #f4f7f6;
+      color: #333;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2em;
+    }
+    #backBtn {
+      background-color: #6ca972;
+      color: white;
+      padding: 0.5em 1.2em;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    #backBtn:hover {
+      background-color: #559353;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #4a7a50;
+    }
+    main h2 {
+      margin-top: 0;
+      color: #3c5d2f;
+    }
+    ol {
+      padding-left: 1.2em;
+    }
+    ol li {
+      margin-bottom: 0.6em;
+      line-height: 1.4;
+    }
+    p {
+      margin: 0.5em 0;
+      font-size: 1em;
+    }
+    .error {
+      color: #b00020;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🏋️‍♀️ Workout Session</h1>
+    <a href="dashboard.html" id="backBtn">Back to Dashboard</a>
+  </header>
+
+  <main>
+    <section id="workoutDetails">
+      <h2>Loading workout...</h2>
+    </section>
+  </main>
+
+  <script src="workout.js"></script>
+</body>
+</html>

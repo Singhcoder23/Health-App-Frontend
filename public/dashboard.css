@@ -7,7 +7,6 @@
   --pub-bg: #f0f5f9;
 }
 
-/* Responsive core styles */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
@@ -24,12 +23,10 @@ header {
   align-items: center;
   flex-wrap: wrap;
 }
-
 header h1 {
   margin: 0;
   font-size: 1.5em;
 }
-
 #logoutBtn {
   background: #fff;
   color: var(--primary-green);
@@ -41,32 +38,21 @@ header h1 {
   box-shadow: 0 2px 6px #0001;
   transition: background 0.3s, color 0.3s;
 }
-#logoutBtn:hover {
-  background: #b0d7b6;
-  color: #fff;
-}
+#logoutBtn:hover { background: #b0d7b6; color: #fff;}
 
 main {
   max-width: 900px;
   margin: 2em auto;
   padding: 0 1em;
 }
-
-.section {
-  margin-bottom: 2.2em;
-}
-
+.section { margin-bottom: 2.2em; }
 h2 {
   color: #4a7a50;
   border-bottom: 2px solid var(--primary-green);
   padding-bottom: 0.22em;
   font-size: 1.12em;
 }
-
-.session-list {
-  margin-top: 1em;
-}
-
+.session-list { margin-top: 1em; }
 .session-item {
   background-color: white;
   border-radius: 8px;
@@ -78,14 +64,8 @@ h2 {
   align-items: center;
   transition: box-shadow 0.3s;
 }
-.session-item:hover {
-  box-shadow: 0 5px 17px #495a2a23;
-}
-
-.session-info {
-  max-width: 70vw;
-}
-
+.session-item:hover { box-shadow: 0 5px 17px #495a2a23; }
+.session-info { max-width: 70vw; }
 .session-info h3 {
   margin: 0 0 0.35em 0;
   font-weight: 700;
@@ -93,19 +73,13 @@ h2 {
   font-size: 1.08em;
   word-break: break-word;
 }
-
 .session-info p {
   margin: 0.2em 0;
   font-size: 0.99em;
   color: #555;
   word-break: break-word;
 }
-
-.tags {
-  font-size: 0.89em;
-  color: #79966a;
-}
-
+.tags { font-size: 0.89em; color: #79966a; }
 .session-actions button {
   margin-left: 0.48em;
   background: var(--primary-green);
@@ -119,7 +93,6 @@ h2 {
 }
 .session-actions button.publish { background-color: #3b662d; }
 .session-actions button.cancel { background: #bbb; color: #222; }
-
 .session-actions button:hover { opacity: 0.9; }
 
 .session-editor {
@@ -128,17 +101,8 @@ h2 {
   border-radius: 13px;
   box-shadow: 0 4px 16px #667b5520;
 }
-
-#sessionForm label {
-  display: block;
-  margin-top: 1em;
-  font-weight: 600;
-  color: #3c5d2f;
-  font-size: 1.07em;
-}
-
-#sessionForm input[type="text"],
-#sessionForm textarea {
+#sessionForm label { display: block; margin-top: 1em; font-weight: 600; color: #3c5d2f; font-size: 1.07em; }
+#sessionForm input[type="text"], #sessionForm textarea {
   width: 100%;
   border: 1.5px solid var(--primary-green);
   border-radius: 8px;
@@ -150,15 +114,9 @@ h2 {
   resize: vertical;
   transition: border-color 0.25s;
 }
-#sessionForm input[type="text"]:focus,
-#sessionForm textarea:focus { border-color: var(--accent-blue); outline: none; }
+#sessionForm input[type="text"]:focus, #sessionForm textarea:focus { border-color: var(--accent-blue); outline: none; }
 
-.editor-buttons {
-  margin-top: 1.5em;
-  display: flex;
-  gap: 1em;
-}
-
+.editor-buttons { margin-top: 1.5em; display: flex; gap: 1em; }
 .editor-buttons button {
   flex: 1;
   padding: 0.8em 0;
@@ -169,33 +127,13 @@ h2 {
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
-#saveDraftBtn {
-  background: var(--accent-blue);
-  color: white;
-}
+#saveDraftBtn { background: var(--accent-blue); color: white; }
 #saveDraftBtn:hover { background: var(--accent-lavender); }
-
-#publishBtn {
-  background: var(--primary-green);
-  color: white;
-}
+#publishBtn { background: var(--primary-green); color: white; }
 #publishBtn:hover { background: #3b662d; }
-
-#cancelBtn {
-  background: #ccc;
-  color: #444;
-}
+#cancelBtn { background: #ccc; color: #444; }
 #cancelBtn:hover { background: #aaa; }
-
-.editor-status {
-  margin-top: 1em;
-  font-weight: 600;
-  color: #4a7a50;
-  min-height: 1.2em;
-  font-size: 1em;
-}
-
+.editor-status { margin-top: 1em; font-weight: 600; color: #4a7a50; min-height: 1.2em; font-size: 1em; }
 #newSessionBtn {
   background: var(--primary-green);
   color: white;
@@ -207,12 +145,9 @@ h2 {
   cursor: pointer;
   transition: background .3s;
 }
-#newSessionBtn:hover { background: var(--accent-blue); }
-
-/* Published/draft backgrounds */
-.session-item.draft { background: var(--draft-bg); }
-.session-item.published { background: var(--pub-bg); }
-
+#newSessionBtn:hover { background: var(--accent-blue);}
+.session-item.draft { background: var(--draft-bg);}
+.session-item.published { background: var(--pub-bg);}
 .error { color: #b00020; }
 
 @media (max-width: 700px) {
@@ -221,7 +156,6 @@ h2 {
   header, .session-editor { padding: 1em; }
   .editor-buttons button { font-size: 0.98em; padding: 0.7em 0;}
 }
-
 @media (max-width: 499px) {
   .session-item, .session-editor { flex-direction: column; }
   .session-info { max-width: 98vw; }
