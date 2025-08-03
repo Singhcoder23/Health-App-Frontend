@@ -1,6 +1,7 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const API_BASE = "https://wellness-and-health-session-platform.onrender.com";
+const API_BASE = "https://wellness-and-health-session-platform.onrender.com/api";
 
+document.addEventListener('DOMContentLoaded', () => {
+  // --- Auth check & Logout ---
   const token = localStorage.getItem('token');
   if (!token) {
     window.location.href = 'index.html';
@@ -11,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = 'index.html';
   };
 
+  // Elements
   const publishedSessionsList = document.getElementById('publishedSessionsList');
   const mySessionList = document.getElementById('mySessionList');
   const sessionEditorSection = document.getElementById('sessionEditorSection');
@@ -54,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     d.textContent = txt; return d.innerHTML;
   }
 
+
   async function loadPublishedSessions() {
     try {
       const res = await fetch(`${API_BASE}/sessions`);
@@ -70,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+
   function populatePublished(sessions, mark = '') {
     publishedSessionsList.innerHTML = sessions.map(s => `
       <div class="session-item published">
@@ -84,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `).join('');
   }
+
 
   async function loadMySessions() {
     try {
@@ -114,12 +119,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+
   window.editSession = id => openEditor(id);
   window.publishSession = id => { inputId.value = id; saveOrPublish('publish'); };
   newSessionBtn.onclick = () => openEditor();
   cancelBtn.onclick = () => closeEditor();
   saveDraftBtn.onclick = () => saveOrPublish('save-draft');
   publishBtn.onclick = () => saveOrPublish('publish');
+
 
   async function openEditor(id) {
     editorStatus.textContent = '';
@@ -147,11 +154,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+
   function closeEditor() {
     sessionEditorSection.style.display = 'none';
     editorStatus.textContent = '';
     sessionForm.reset();
   }
+
 
   async function saveOrPublish(action) {
     const id = inputId.value || undefined;
@@ -166,8 +175,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const url = action === 'publish'
-       ? `${API_BASE}/my-sessions/publish`
-      : `${API_BASE}/my-sessions/save-draft`;
+         ? `${API_BASE}/my-sessions/publish`
+         : `${API_BASE}/my-sessions/save-draft`;
+
 
     try {
       const res = await fetch(url, {
@@ -192,6 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+
   let autoSaveTimer = null;
   [ inputTitle, inputTags, inputJsonUrl, inputContent ].forEach(input =>
     input.addEventListener('input', () => {
@@ -202,6 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 5000);
     })
   );
+
 
   loadPublishedSessions();
   loadMySessions();

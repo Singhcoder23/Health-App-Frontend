@@ -3,25 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Register</title>
+  <title>Register - Wellness App</title>
+  <link rel="stylesheet" href="register.css" />
 </head>
 <body>
-  <h1>Register</h1>
-
-  <form id="registerForm">
-    <label for="email">Email:</label><br />
-    <input type="email" id="email" name="email" required /><br /><br />
-
-    <label for="password">Password:</label><br />
-    <input type="password" id="password" name="password" required minlength="6" /><br /><br />
-
-    <button type="submit">Register</button>
-  </form>
-
-  <div id="message" style="color: red; margin-top: 10px;"></div>
-
-  <p>Already have an account? <a href="index.html">Login here</a></p>
-
+  <div class="register-container">
+    <form id="registerForm" autocomplete="off">
+      <h2>Create Account</h2>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required />
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="••••••••" required />
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required />
+      <button type="submit">Register</button>
+      <p>Already have an account? <a href="login.html">Login here</a></p>
+      <div id="registerMessage" class="message"></div>
+    </form>
+  </div>
   <script src="register.js"></script>
 </body>
 </html>

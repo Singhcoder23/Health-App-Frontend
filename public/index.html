@@ -3,31 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login | Wellness Portal</title>
-  <link rel="stylesheet" href="login.css" />
+  <title>Welcome to Wellness App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex; justify-content: center; align-items: center;
+      height: 100vh; margin: 0; background: #d8eee4;
+      color: #4a7a50;
+      flex-direction: column;
+    }
+    button {
+      padding: 0.8em 1.2em;
+      background-color: #6ca972;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 1.1em;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #559353;
+    }
+  </style>
 </head>
 <body>
-  <div class="login-container">
-    <div class="login-illustration">
-      <img src="https://img.icons8.com/color/160/000000/yoga.png" alt="Yoga Illustration" />
-      <img src="https://img.icons8.com/color/96/000000/meditation-guru.png" alt="Meditation Icon" class="meditate-img"/>
-      <h1>Welcome back to <span class="brand">Peaceful Roots</span></h1>
-      <p>Find balance and calm. Start your wellness journey.</p>
-    </div>
-    <form id="loginForm" class="login-form">
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required placeholder="your@email.com" />
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" required placeholder="••••••••" />
-      <button type="submit">Login</button>
-      <div class="login-message" id="message"></div>
-      <p class="register-link">Don't have an account? <a href="register.html">Register here</a></p>
-    </form>
-  </div>
-  <footer>
-    <img src="https://img.icons8.com/color/48/000000/wind.png" alt="Breathing" />
-    <p>Wellness &middot; Mindfulness &middot; You</p>
-  </footer>
-  <script src="login.js"></script>
+  <h1>Welcome to WellnessApp</h1>
+  <button onclick="location.href='login.html'">Get Started</button>
 </body>
 </html>

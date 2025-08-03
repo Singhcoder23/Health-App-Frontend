@@ -1,44 +1,42 @@
-document.getElementById('registerForm').addEventListener('submit', async function (e) {
-  const API_BASE = "https://wellness-and-health-session-platform.onrender.com";  
+// Define the base URL for your backend API
+const API_BASE = "https://health-app-backend-8pci.onrender.com";
 
+document.getElementById("registerForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
-  const messageDiv = document.getElementById('message');
-  messageDiv.textContent = '';
-  messageDiv.style.color = 'red';
+  const msg = document.getElementById("registerMessage");
+  msg.textContent = "";
+  msg.style.color = "red"; // default message color to red for errors
 
   const email = e.target.email.value.trim();
   const password = e.target.password.value;
+  const confirm = e.target.confirmPassword.value;
+
+  if (password !== confirm) {
+    msg.textContent = "Passwords do not match.";
+    return;
+  }
 
   try {
-    
-    const response = await fetch(`${API_BASE}/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch(`${API_BASE}/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
 
-    const data = await response.json();
+    const data = await res.json();
 
-    if (!response.ok) {
-      if (data.errors) {
-        messageDiv.textContent = data.errors.map(err => err.msg).join(', ');
-      } else if (data.message) {
-        messageDiv.textContent = data.message;
-      } else {
-        messageDiv.textContent = 'Registration failed. Please try again.';
-      }
+    if (!res.ok) {
+      msg.textContent = data.message || "Registration failed.";
       return;
     }
 
-    messageDiv.style.color = 'green';
-    messageDiv.textContent = 'Registration successful! Redirecting to login...';
-
+    msg.style.color = "green";
+    msg.textContent = "Registration successful! Redirecting to login...";
     setTimeout(() => {
-      window.location.href = 'index.html';
+      window.location.href = "login.html";
     }, 1500);
   } catch (err) {
-    messageDiv.textContent = 'Could not connect to server. Please try again later.';
-    console.error('Fetch error:', err);
+    msg.textContent = "Error connecting to server.";
   }
 });

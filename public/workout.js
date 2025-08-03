@@ -1,4 +1,4 @@
-const API_BASE = "https://wellness-and-health-session-platform.onrender.com";
+const API_BASE = "https://health-app-backend-8pci.onrender.com/api";
 
 function getQueryParam(name) {
   const params = new URLSearchParams(window.location.search);
@@ -14,15 +14,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
- 
-  if (!sessionURL) {
-   
-    sessionURL = `${API_BASE}/${sessionURL}`;
-  }
-
   detailsSection.innerHTML = "<h2>Loading workout...</h2>";
 
   try {
+    // If sessionURL is relative (no http/https), prefix with API_BASE
+    if (!sessionURL.startsWith('http://') && !sessionURL.startsWith('https://')) {
+      // Assume it is relative to your backend API base
+      // Append sessionURL to API_BASE without double slash
+      sessionURL = API_BASE.replace(/\/$/, '') + '/' + sessionURL.replace(/^\//, '');
+    }
+
     const response = await fetch(sessionURL);
     if (!response.ok) throw new Error(`Network error: ${response.status}`);
 
@@ -43,23 +44,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       html += `<p>${sessionData.content}</p>`;
     }
 
-    if (
-      sessionData.steps &&
-      Array.isArray(sessionData.steps) &&
-      sessionData.steps.length > 0
-    ) {
+    if (sessionData.steps && Array.isArray(sessionData.steps) && sessionData.steps.length > 0) {
       html += `<h3>Workout Steps:</h3><ol>`;
-      sessionData.steps.forEach((step) => {
+      sessionData.steps.forEach(step => {
         html += `<li>${step}</li>`;
       });
       html += `</ol>`;
-    } else if (
-      sessionData.exercises &&
-      Array.isArray(sessionData.exercises) &&
-      sessionData.exercises.length > 0
-    ) {
+    } else if (sessionData.exercises && Array.isArray(sessionData.exercises) && sessionData.exercises.length > 0) {
       html += `<h3>Workout Exercises:</h3><ol>`;
-      sessionData.exercises.forEach((exercise) => {
+      sessionData.exercises.forEach(exercise => {
         html += `<li>${exercise}</li>`;
       });
       html += `</ol>`;
@@ -69,9 +62,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     detailsSection.innerHTML = html;
   } catch (error) {
-    console.error("Error fetching workout session JSON:", error);
     detailsSection.innerHTML = `<p class='error'>Error loading workout: ${error.message}</p>`;
   }
 });
-
-
