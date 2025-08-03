@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const API_BASE = "https://health-app-backend-52md.onrender.com";
+  const API_BASE = "https://wellness-and-health-session-platform.onrender.com";
 
   const token = localStorage.getItem('token');
   if (!token) {

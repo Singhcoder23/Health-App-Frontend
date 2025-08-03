@@ -1,5 +1,5 @@
 document.getElementById('registerForm').addEventListener('submit', async function (e) {
-  const API_BASE = "https://health-app-backend-52md.onrender.com/api";  
+  const API_BASE = "https://wellness-and-health-session-platform.onrender.com";  
 
   e.preventDefault();
 

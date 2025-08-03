@@ -1,4 +1,4 @@
-const API_BASE = "https://health-app-backend-52md.onrender.com";
+const API_BASE = "https://wellness-and-health-session-platform.onrender.com";
 
 function getQueryParam(name) {
   const params = new URLSearchParams(window.location.search);
