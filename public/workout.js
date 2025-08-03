@@ -1,15 +1,23 @@
+const API_BASE = "https://health-app-backend-52md.onrender.com";
+
 function getQueryParam(name) {
   const params = new URLSearchParams(window.location.search);
   return params.get(name);
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const sessionURL = getQueryParam('session');
+  let sessionURL = getQueryParam('session');
   const detailsSection = document.getElementById('workoutDetails');
 
   if (!sessionURL) {
     detailsSection.innerHTML = "<p class='error'>No session specified to load.</p>";
     return;
+  }
+
+ 
+  if (!sessionURL) {
+   
+    sessionURL = `${API_BASE}/${sessionURL}`;
   }
 
   detailsSection.innerHTML = "<h2>Loading workout...</h2>";
@@ -35,15 +43,23 @@ document.addEventListener('DOMContentLoaded', async () => {
       html += `<p>${sessionData.content}</p>`;
     }
 
-    if (sessionData.steps && Array.isArray(sessionData.steps) && sessionData.steps.length > 0) {
+    if (
+      sessionData.steps &&
+      Array.isArray(sessionData.steps) &&
+      sessionData.steps.length > 0
+    ) {
       html += `<h3>Workout Steps:</h3><ol>`;
-      sessionData.steps.forEach(step => {
+      sessionData.steps.forEach((step) => {
         html += `<li>${step}</li>`;
       });
       html += `</ol>`;
-    } else if (sessionData.exercises && Array.isArray(sessionData.exercises) && sessionData.exercises.length > 0) {
+    } else if (
+      sessionData.exercises &&
+      Array.isArray(sessionData.exercises) &&
+      sessionData.exercises.length > 0
+    ) {
       html += `<h3>Workout Exercises:</h3><ol>`;
-      sessionData.exercises.forEach(exercise => {
+      sessionData.exercises.forEach((exercise) => {
         html += `<li>${exercise}</li>`;
       });
       html += `</ol>`;
@@ -53,6 +69,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     detailsSection.innerHTML = html;
   } catch (error) {
+    console.error("Error fetching workout session JSON:", error);
     detailsSection.innerHTML = `<p class='error'>Error loading workout: ${error.message}</p>`;
   }
 });
+
+

@@ -1,4 +1,6 @@
 document.getElementById('registerForm').addEventListener('submit', async function (e) {
+  const API_BASE = "https://health-app-backend-52md.onrender.com/api";  
+
   e.preventDefault();
 
   const messageDiv = document.getElementById('message');
@@ -9,7 +11,8 @@ document.getElementById('registerForm').addEventListener('submit', async functio
   const password = e.target.password.value;
 
   try {
-    const response = await fetch('http://localhost:5000/api/auth/register', {
+    
+    const response = await fetch(`${API_BASE}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),

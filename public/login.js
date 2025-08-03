@@ -1,3 +1,5 @@
+const API_BASE = "https://health-app-backend-52md.onrender.com/api";  
+
 document.getElementById('loginForm').addEventListener('submit', async function (e) {
   e.preventDefault();
 
@@ -9,7 +11,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
   const password = e.target.password.value;
 
   try {
-    const response = await fetch('http://localhost:5000/api/auth/login', {
+    const response = await fetch(`${API_BASE}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -23,15 +25,15 @@ document.getElementById('loginForm').addEventListener('submit', async function (
 
     const data = await response.json();
 
-    // Store JWT token for use in authenticated calls
+    
     localStorage.setItem('token', data.token);
 
     messageDiv.style.color = 'green';
     messageDiv.textContent = 'Login successful! Redirecting...';
 
-    // Redirect to dashboard page after 1 second
+    
     setTimeout(() => {
-      window.location.href = '/dashboard.html'; // Adjust path as needed
+      window.location.href = '/dashboard.html'; 
     }, 1000);
   } catch (err) {
     messageDiv.textContent = 'Error connecting to server. Please try again later.';

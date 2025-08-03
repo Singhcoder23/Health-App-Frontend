@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // --- Auth check & Logout ---
+  const API_BASE = "https://health-app-backend-52md.onrender.com";
+
   const token = localStorage.getItem('token');
   if (!token) {
     window.location.href = 'index.html';
@@ -10,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = 'index.html';
   };
 
-  // Elements
   const publishedSessionsList = document.getElementById('publishedSessionsList');
   const mySessionList = document.getElementById('mySessionList');
   const sessionEditorSection = document.getElementById('sessionEditorSection');
@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const publishBtn = document.getElementById('publishBtn');
   const cancelBtn = document.getElementById('cancelBtn');
 
-  // Demo published sessions data with local JSON URLs
   const DEMO_SESSIONS = [
     {
       title: "Morning Flow Yoga 🌅",
@@ -49,17 +48,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  // Escape HTML for injection safety
   function escapeHtml(txt) {
     if (!txt) return '';
     const d = document.createElement('div');
     d.textContent = txt; return d.innerHTML;
   }
 
-  // --- Load Published Sessions ---
   async function loadPublishedSessions() {
     try {
-      const res = await fetch('http://localhost:5000/api/sessions');
+      const res = await fetch(`${API_BASE}/sessions`);
       if (!res.ok) throw new Error();
       const sessions = await res.json();
 
@@ -88,10 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('');
   }
 
-  // --- Load User's Sessions ---
   async function loadMySessions() {
     try {
-      const res = await fetch('http://localhost:5000/api/my-sessions', {
+      const res = await fetch(`${API_BASE}/my-sessions`, {
         headers: { Authorization: 'Bearer ' + token }
       });
       if (!res.ok) throw new Error('Failed to load your sessions');
@@ -118,7 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- Session Editor Logic ---
   window.editSession = id => openEditor(id);
   window.publishSession = id => { inputId.value = id; saveOrPublish('publish'); };
   newSessionBtn.onclick = () => openEditor();
@@ -136,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:5000/api/my-sessions/${id}`, {
+      const res = await fetch(`${API_BASE}/my-sessions/${id}`, {
         headers: { Authorization: 'Bearer ' + token }
       });
       if (!res.ok) throw new Error();
@@ -171,8 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const url = action === 'publish'
-      ? 'http://localhost:5000/api/my-sessions/publish'
-      : 'http://localhost:5000/api/my-sessions/save-draft';
+       ? `${API_BASE}/my-sessions/publish`
+      : `${API_BASE}/my-sessions/save-draft`;
 
     try {
       const res = await fetch(url, {
@@ -197,7 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Auto-save draft after 5 seconds of inactivity
   let autoSaveTimer = null;
   [ inputTitle, inputTags, inputJsonUrl, inputContent ].forEach(input =>
     input.addEventListener('input', () => {
@@ -209,7 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   );
 
-  // Initial load
   loadPublishedSessions();
   loadMySessions();
 });
