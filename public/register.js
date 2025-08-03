@@ -1,4 +1,3 @@
-// Define the base URL for your backend API
 const API_BASE = "https://health-app-backend-8pci.onrender.com";
 
 document.getElementById("registerForm").addEventListener("submit", async function (e) {
@@ -6,7 +5,7 @@ document.getElementById("registerForm").addEventListener("submit", async functio
 
   const msg = document.getElementById("registerMessage");
   msg.textContent = "";
-  msg.style.color = "red"; // default message color to red for errors
+  msg.style.color = "red"; 
 
   const email = e.target.email.value.trim();
   const password = e.target.password.value;

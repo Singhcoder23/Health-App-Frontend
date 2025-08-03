@@ -5,7 +5,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
 
   const msg = document.getElementById("loginMessage");
   msg.textContent = "";
-  msg.style.color = ""; // Reset color
+  msg.style.color = ""; 
 
   const email = e.target.email.value.trim();
   const password = e.target.password.value;

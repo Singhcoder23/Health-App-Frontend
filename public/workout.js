@@ -1,4 +1,5 @@
-const API_BASE = "https://health-app-backend-8pci.onrender.com/api";
+const API_BASE = "https://health-app-backend-8pci.onrender.com";
+
 
 function getQueryParam(name) {
   const params = new URLSearchParams(window.location.search);
@@ -14,16 +15,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
+
   detailsSection.innerHTML = "<h2>Loading workout...</h2>";
 
   try {
-    // If sessionURL is relative (no http/https), prefix with API_BASE
-    if (!sessionURL.startsWith('http://') && !sessionURL.startsWith('https://')) {
-      // Assume it is relative to your backend API base
-      // Append sessionURL to API_BASE without double slash
-      sessionURL = API_BASE.replace(/\/$/, '') + '/' + sessionURL.replace(/^\//, '');
-    }
-
     const response = await fetch(sessionURL);
     if (!response.ok) throw new Error(`Network error: ${response.status}`);
 
@@ -62,6 +57,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     detailsSection.innerHTML = html;
   } catch (error) {
+    console.error("Error loading workout:", error);
     detailsSection.innerHTML = `<p class='error'>Error loading workout: ${error.message}</p>`;
   }
 });

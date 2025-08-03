@@ -1,18 +1,18 @@
-const API_BASE = "https://wellness-and-health-session-platform.onrender.com/api";
-
 document.addEventListener('DOMContentLoaded', () => {
-  // --- Auth check & Logout ---
+const API_BASE = "https://health-app-backend-8pci.onrender.com";
+
   const token = localStorage.getItem('token');
   if (!token) {
     window.location.href = 'index.html';
     return;
   }
+
+  
   document.getElementById('logoutBtn').onclick = () => {
     localStorage.removeItem('token');
     window.location.href = 'index.html';
   };
 
-  // Elements
   const publishedSessionsList = document.getElementById('publishedSessionsList');
   const mySessionList = document.getElementById('mySessionList');
   const sessionEditorSection = document.getElementById('sessionEditorSection');
@@ -53,9 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function escapeHtml(txt) {
     if (!txt) return '';
     const d = document.createElement('div');
-    d.textContent = txt; return d.innerHTML;
+    d.textContent = txt;
+    return d.innerHTML;
   }
-
 
   async function loadPublishedSessions() {
     try {
@@ -73,22 +73,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-
   function populatePublished(sessions, mark = '') {
-    publishedSessionsList.innerHTML = sessions.map(s => `
+    publishedSessionsList.innerHTML = sessions.map(session => `
       <div class="session-item published">
         <div class="session-info">
-          <h3>${escapeHtml(s.title || 'Untitled')} <span style="font-size:0.7em;color:#aaa;">${mark}</span></h3>
-          <p class="tags">Tags: ${(s.tags || []).map(escapeHtml).join(', ') || '<em>None</em>'}</p>
-          ${s.json_file_url 
-            ? `<p><a href="workout.html?session=${encodeURIComponent(s.json_file_url)}" class="workout-link" target="_blank" rel="noopener">Do Workout</a></p>` 
+          <h3>${escapeHtml(session.title || 'Untitled')} <span style="font-size:0.7em;color:#aaa;">${mark}</span></h3>
+          <p class="tags">Tags: ${(session.tags || []).map(escapeHtml).join(', ') || '<em>None</em>'}</p>
+          ${session.json_file_url 
+            ? `<p><a href="workout.html?session=${encodeURIComponent(session.json_file_url)}" class="workout-link" target="_blank" rel="noopener">Do Workout</a></p>` 
             : ''}
-          ${s.content ? `<p>${escapeHtml(s.content)}</p>` : ''}
+          ${session.content ? `<p>${escapeHtml(session.content)}</p>` : ''}
         </div>
       </div>
     `).join('');
   }
-
 
   async function loadMySessions() {
     try {
@@ -100,17 +98,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
       mySessionList.innerHTML = (sessions.length === 0)
         ? '<p>You have no sessions.</p>'
-        : sessions.map(s => `
-          <div class="session-item ${s.status}">
+        : sessions.map(session => `
+          <div class="session-item ${session.status}">
             <div class="session-info">
-              <h3>${escapeHtml(s.title || '(No Title)')}</h3>
-              <p class="tags">Tags: ${(s.tags || []).map(escapeHtml).join(', ') || '<em>None</em>'}</p>
-              <p>Status: <strong>${escapeHtml(s.status)}</strong></p>
+              <h3>${escapeHtml(session.title || '(No Title)')}</h3>
+              <p class="tags">Tags: ${(session.tags || []).map(escapeHtml).join(', ') || '<em>None</em>'}</p>
+              <p>Status: <strong>${escapeHtml(session.status)}</strong></p>
             </div>
             <div class="session-actions">
-              <button onclick="editSession('${s._id}')">Edit</button>
-              ${s.status === 'draft' ? `<button class="publish" onclick="publishSession('${s._id}')">Publish</button>` : ''}
-              ${s.json_file_url ? `<a href="workout.html?session=${encodeURIComponent(s.json_file_url)}" target="_blank" rel="noopener" class="workout-link">Do Workout</a>` : ''}
+              <button onclick="editSession('${session._id}')">Edit</button>
+              ${session.status === 'draft' ? `<button class="publish" onclick="publishSession('${session._id}')">Publish</button>` : ''}
+              ${session.json_file_url ? `<a href="workout.html?session=${encodeURIComponent(session.json_file_url)}" target="_blank" rel="noopener" class="workout-link">Do Workout</a>` : ''}
             </div>
           </div>
         `).join('');
@@ -122,11 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.editSession = id => openEditor(id);
   window.publishSession = id => { inputId.value = id; saveOrPublish('publish'); };
+
   newSessionBtn.onclick = () => openEditor();
   cancelBtn.onclick = () => closeEditor();
   saveDraftBtn.onclick = () => saveOrPublish('save-draft');
   publishBtn.onclick = () => saveOrPublish('publish');
-
 
   async function openEditor(id) {
     editorStatus.textContent = '';
@@ -137,30 +135,30 @@ document.addEventListener('DOMContentLoaded', () => {
       inputId.value = inputTitle.value = inputTags.value = inputJsonUrl.value = inputContent.value = '';
       return;
     }
+
     try {
       const res = await fetch(`${API_BASE}/my-sessions/${id}`, {
         headers: { Authorization: 'Bearer ' + token }
       });
       if (!res.ok) throw new Error();
-      const s = await res.json();
-      inputId.value = s._id || '';
-      inputTitle.value = s.title || '';
-      inputTags.value = (s.tags || []).join(', ');
-      inputJsonUrl.value = s.json_file_url || '';
-      inputContent.value = s.content || '';
+      const session = await res.json();
+
+      inputId.value = session._id || '';
+      inputTitle.value = session.title || '';
+      inputTags.value = (session.tags || []).join(', ');
+      inputJsonUrl.value = session.json_file_url || '';
+      inputContent.value = session.content || '';
     } catch {
       alert('Error loading session for editing.');
       closeEditor();
     }
   }
 
-
   function closeEditor() {
     sessionEditorSection.style.display = 'none';
     editorStatus.textContent = '';
     sessionForm.reset();
   }
-
 
   async function saveOrPublish(action) {
     const id = inputId.value || undefined;
@@ -175,9 +173,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const url = action === 'publish'
-         ? `${API_BASE}/my-sessions/publish`
-         : `${API_BASE}/my-sessions/save-draft`;
-
+      ? `${API_BASE}/my-sessions/publish`
+      : `${API_BASE}/my-sessions/save-draft`;
 
     try {
       const res = await fetch(url, {
@@ -188,23 +185,25 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         body: JSON.stringify({ _id: id, title, tags, json_file_url, content }),
       });
+
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
         editorStatus.textContent = errData.message || "Failed to save session. Please try again.";
         return;
       }
+
       await res.json();
       editorStatus.textContent = action === 'publish' ? 'Session Published!' : 'Draft Saved!';
       await loadMySessions();
+
       if (action === 'publish') closeEditor();
     } catch {
       editorStatus.textContent = "Failed to save session. Please try again later.";
     }
   }
 
-
   let autoSaveTimer = null;
-  [ inputTitle, inputTags, inputJsonUrl, inputContent ].forEach(input =>
+  [inputTitle, inputTags, inputJsonUrl, inputContent].forEach(input =>
     input.addEventListener('input', () => {
       editorStatus.textContent = 'Editing...';
       if (autoSaveTimer) clearTimeout(autoSaveTimer);
@@ -213,7 +212,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 5000);
     })
   );
-
 
   loadPublishedSessions();
   loadMySessions();
